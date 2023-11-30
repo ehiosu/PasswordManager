@@ -61,12 +61,35 @@ export const sharePassword=async(id,token,formData)=>{
 }
 
 export const getUserSharedPasswords=async(id,token,)=>{
-       console.log(id)
        const response=await axios(`${baseUrl}users/passwords/${id}/sharedpasswords`,{
               headers:{
                      "Authorization": `Bearer ${token}`
               },
               method:"get",
+             
+       })
+       return response.data
+}
+
+export const changeUserPin=async(token,formData)=>{
+       const response=await axios(`${baseUrl}users/pin/change`,{
+              headers:{
+                     "Authorization": `Bearer ${token}`
+              },
+              method:"post",
+              data:formData
+             
+       })
+       return response.data
+}
+
+export const removeUserFromPassword=async(passwordid,id,token)=>{
+       const response=await axios(`${baseUrl}users/passwords/${passwordid}/${id}/remove`,{
+              headers:{
+                     "Authorization": `Bearer ${token}`
+              },
+              method:"post",
+              
              
        })
        return response.data

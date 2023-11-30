@@ -7,6 +7,7 @@ import { AuthorizedComponent } from '../Components/AuthorizedComponent'
 import { ModalOptions } from '../Components/ModalContext'
 import { ViewPassword, ViewSharedPassword } from '../Components/ViewPassword'
 import { SharePassword } from '../Components/SharePassword'
+import { ChangePinForm } from '../Components/ChangePinForm'
 
 
 const client=new QueryClient()
@@ -30,6 +31,7 @@ export const Dashboard = () => {
       <AuthorizedComponent  modalOption={ModalOptions.CVIEW} retrievePassword={"true"} >
         <ViewSharedPassword/>
       </AuthorizedComponent>
+      <ChangePinForm/>
     </main>
     </QueryClientProvider>
   )

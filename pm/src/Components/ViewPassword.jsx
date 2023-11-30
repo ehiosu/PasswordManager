@@ -2,8 +2,9 @@ import React, { useContext, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useMutation, useQueryClient } from 'react-query'
 import ModalContext, { ModalOptions } from './ModalContext'
-import { updatePassword } from '../functionality'
+import { removeUserFromPassword, updatePassword } from '../functionality'
 import { useAuth } from '@clerk/clerk-react'
+import { PasswordField } from './PasswordField'
 
 export const ViewPassword = () => {
     const   queryClient=useQueryClient()
@@ -34,20 +35,20 @@ export const ViewPassword = () => {
       passwordFieldRef.current.type=passwordFieldRef.current.type==="password"?"text":"password"
     }
     
+   
+
     const onSubmit=(values)=>{
       if(username===values.username && password===values.password &&  url===values.password ){
-        
         handleClose()
         return
       }
       else{
-        console.log(selectedPassword.id)
         updatePasswordMutation.mutateAsync(values)
       }
 
     }
   return (
-    <section    className='lg:w-[30vw]  lg:h-[75vh] bg-white  rounded-md    border-r-8  p-4  border-r-blue-400/40   relative    h-[80vh]    w-[90vw]  flex  flex-col'>
+    <section    className='lg:w-[30vw] md:w-[50vw] sm:w-[70vw]  lg:h-[75vh] bg-white  rounded-md    border-r-8  p-4  border-r-blue-400/40   relative    h-[80vh]    w-[90vw]  flex  flex-col'>
         <p  className='font-semibold    text-[1.2rem]'>Password View</p>
         <p  className='text-neutral-400    text-[0.7275rem] lg:text-[0.6275rem]'>Make sure to save any changes</p>
             <i  className='bi   bi-x absolute    top-2  right-2 text-[1.5rem]'  onClick={handleClose}></i>
@@ -57,7 +58,7 @@ export const ViewPassword = () => {
                 })}  placeholder='Username'/>
                   <p  className='mb-4 mt-2  text-neutral-400 md:text-[0.8275rem] text-[0.7275rem]'>Username for the password created</p>
                 <div  className='w-full h-8 relative '>
-                <input type="password" ref={passwordFieldRef} defaultValue={password} className='w-full   h-full    outline-none     border-b-2 border-b-neutral-400/50 rounded-b-sm    text-neutral-500  p-2     my-2' {...register("password",{
+                <PasswordField type="password" ref={passwordFieldRef} id={'password'} defaultValue={password} className='w-full   h-full    outline-none     border-b-2 border-b-neutral-400/50 rounded-b-sm    text-neutral-500  px-2    my-2' register={register("password",{
                   required:"Password field is required"
                 })}     placeholder='Password'/>
                 <i  className={`bi   absolute  top-2/3 -translate-y-2/3 right-2 `}  onClick={()=>{togglePasswordView()}}></i>
@@ -68,7 +69,7 @@ export const ViewPassword = () => {
                 })}  placeholder='URL'/>
                   <p  className='mb-4 mt-2  text-neutral-400 md:text-[0.8275rem] text-[0.7275rem]'>Link to use the password created</p>
                   <p  className='text-[0.8275rem] text-neutral-400 border-b-2 border-b-neutral-400  py-2  mb-2'>Users You've shared this password with :</p>
-                  <UserList users={users}/>
+                  <UserList users={users} id={id}/>
                 <button className={`w-full bg-blue-400  text-white  mt-auto h-8  `}   disabled={updatePasswordMutation.isLoading}  >Submit Changes</button>
                   
                 
@@ -78,13 +79,25 @@ export const ViewPassword = () => {
   )
 }
 
-const UserList=({users})=>{
+const UserList=({users,id})=>{
+  const queryClient=useQueryClient()
+  const {getToken}=useAuth()
+  const removePerson=async(passwordid,id)=>{
+    const response = removeUserFromPassword(passwordid,id,await getToken())
+    response.then((resp)=>{
+
+      queryClient.setQueryData('decryptedData',resp['password'])
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
   return(
     <div  className='flex-1 my-2  overflow-y-auto'>
       {users.map((user)=>{
           return  <div  className='w-full h-10 flex items-center gap-2'>
               <img  className='h-full rounded-full aspect-square ' src={user.imageUrl} alt="" />
               <p  className='text-[0.7275rem] font-thin'>{user.username}</p>
+              <i className='bi bi-x ml-auto text-[1.2rem] hover:text-red-400 hover:cursor-pointer' onClick={()=>removePerson(id,user.id)}></i>
           </div>
       })}
     </div>  

@@ -6,6 +6,7 @@ export  const   ModalOptions={
     Create:'create',
     CVIEW:'cview',
     OVIEW:'oview',
+    CPin:'cpin'
 
 }
 const ModalContext=createContext({
