@@ -57,7 +57,7 @@ export const sharePassword=async(id,token,formData)=>{
               method:"post",
               data:formData
        })
-       return response.data
+       return response
 }
 
 export const getUserSharedPasswords=async(id,token,)=>{
@@ -94,3 +94,17 @@ export const removeUserFromPassword=async(passwordid,id,token)=>{
        })
        return response.data
 }
+
+export const createUserAccount=async(details,token)=>{
+       const response=await axios(`${baseUrl}users/create`,{
+              headers:{
+                     "Authorization": `Bearer ${token}`
+              },
+              method:"post",
+              data:details
+              
+             
+       })
+       return response.data
+}
+  

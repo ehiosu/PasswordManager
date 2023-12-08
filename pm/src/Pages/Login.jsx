@@ -9,7 +9,7 @@ export const  Login=()=>{
 export const CreateAccount=()=>{
     return(
         <main   className="grid place-items-center  grid-cols-1 grid-rows-1 h-screen    md:p-0  p-8 w-full">
-            <SignUp routing='path'  path='/SignUp'  signInUrl='/Signin'   afterSignUpUrl={'/Dashboard'}/>
+            <SignUp routing='path'  path='/SignUp'  signInUrl='/Signin'   afterSignUpUrl={'/Staging'}/>
             </main>
     )
 }

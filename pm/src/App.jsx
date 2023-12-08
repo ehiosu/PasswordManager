@@ -8,6 +8,7 @@ import { ClerkProvider,SignedIn,SignedOut} from "@clerk/clerk-react";
 
 import { Login, CreateAccount } from './Pages/Login'
 import { Landing } from './Pages/Landing'
+import { Staging } from './Pages/CreateAccount'
 
 
 function App() {
@@ -33,6 +34,11 @@ function App() {
         
         </>
        } />
+       <Route path='/Staging' element={<>
+       <SignedIn>
+        <Staging/>
+       </SignedIn>
+       </>} />
        <Route path='/Signin/*'  element={<Login/>}/>
        <Route path='/Signup/*'  element={<CreateAccount/>}/>
        

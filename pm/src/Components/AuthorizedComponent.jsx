@@ -20,6 +20,9 @@ export const AuthorizedComponent = ({children,modalOption,retrievePassword}) => 
             return resp
         }).catch((err)=>{
             setError(err.message=="Request failed with status code 401"?"Wrong Pin!":err.message)
+            setTimeout(()=>{
+                setError('')
+            },1000)
         })},
         onError:(err)=>{
             console.log(err)

@@ -9,3 +9,19 @@ input::-ms-clear {
 ::-ms-clear{
     display: none;
 }
+
+.test{
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%{
+    scale: 100%;
+  }
+  50%{
+    scale: 90%;
+  }
+  100%{
+    scale: 100%;
+  }
+}
